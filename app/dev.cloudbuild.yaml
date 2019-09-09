@@ -1,0 +1,23 @@
+steps:
+
+# download dependencies
+# SKIP
+
+# run tests
+- name: 'gcr.io/cloud-builders/go:alpine'
+  id: Run unit tests
+  args: ['test', '.']
+  env: ['GOPATH=.']
+  # env: ['PROJECT_ROOT=polite']
+
+# bundle app into container image
+- name: 'gcr.io/cloud-builders/docker'
+  id: Build docker image
+  args: [ 'build', '--quiet', '-t', 'gcr.io/$PROJECT_ID/polite:$SHORT_SHA', '.']
+
+# push the image to a registry
+- name: 'gcr.io/cloud-builders/docker'
+  id: Push image to registry
+  args: [ 'push', 'gcr.io/$PROJECT_ID/polite:$SHORT_SHA']
+images:
+- 'gcr.io/$PROJECT_ID/polite'

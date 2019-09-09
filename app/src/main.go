@@ -28,8 +28,8 @@ func main() {
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 	// comment line below to make tests fail
-	http.Error(w, "", http.StatusServiceUnavailable)
-	// fmt.Fprintf(w, greeting)
+	// http.Error(w, "", http.StatusServiceUnavailable)
+	fmt.Fprintf(w, greeting)
 	return
 }
 
