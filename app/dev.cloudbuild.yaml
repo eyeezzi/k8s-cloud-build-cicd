@@ -6,7 +6,7 @@ steps:
 # run tests
 - name: 'gcr.io/cloud-builders/go:alpine'
   id: Run unit tests
-  args: ['test', '.']
+  args: ['test', './src/']
   env: ['GOPATH=.']
   # env: ['PROJECT_ROOT=polite']
 
