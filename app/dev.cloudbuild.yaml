@@ -12,7 +12,7 @@ steps:
 
 # bundle app into container image
 - name: 'gcr.io/cloud-builders/docker'
-  id: Build docker image
+  id: Build application image
   args: [ 'build', '--quiet', '-t', 'gcr.io/$PROJECT_ID/polite:$SHORT_SHA', '.']
 
 # push the image to a registry
@@ -39,9 +39,9 @@ steps:
     echo $$GITLAB_DEPLOY_TOKEN > /root/.ssh/id_rsa
     echo "-----"
     cat /root/.ssh/id_rsa
-  volumes:
-  - name: 'ssh'
-    path: /root/.ssh
+  # volumes:
+  # - name: 'ssh'
+  #   path: /root/.ssh
   secretEnv: ['GITLAB_DEPLOY_TOKEN']
 substitutions:
     _KMS_KEYRING: polite-staging
