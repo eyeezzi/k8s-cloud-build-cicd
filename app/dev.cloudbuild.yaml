@@ -71,6 +71,7 @@ steps:
   args:
   - '-c'
   - |
+    ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
     git config user.email $(gcloud auth list --filter=status:ACTIVE --format='value(account)') && \
     git fetch origin $BRANCH_NAME && \
     git checkout $BRANCH_NAME && \
