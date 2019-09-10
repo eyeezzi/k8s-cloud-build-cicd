@@ -20,14 +20,17 @@ steps:
   id: Push image to registry
   args: [ 'push', 'gcr.io/$PROJECT_ID/polite:$SHORT_SHA']
 
-# update image in staging deployment manifest
+# update the image version in the staging deployment manifest
+# NOTE: I don't like the use of regex to update image tag, but no better option yet.
 - name: 'gcr.io/cloud-builders/gcloud'
   id: Update deployment image tag for staging
   entrypoint: /bin/sh
   args:
   - '-c'
   - |
-    sed -E -i "s|image:[[:space:]]*gcr[^[:space:]]*|image: gcr.io/$PROJECT_ID/polite:$SHORT_SHA|g" k8s/staging-deployment.yaml && \
+    sed -E -i "s|image:[[:space:]]*gcr[^[:space:]]*|image: gcr.io/$PROJECT_ID/polite:$SHORT_SHA|g" $_DEPLOYMENT_MANIFEST && \
     cat k8s/staging-deployment.yaml
+substitutions:
+    _DEPLOYMENT_MANIFEST: k8s/staging-deployment.yaml
 images:
 - 'gcr.io/$PROJECT_ID/polite'
