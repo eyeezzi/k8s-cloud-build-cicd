@@ -27,7 +27,7 @@ steps:
   args:
   - '-c'
   - |
-    sed -E -i "" "s|image:[[:space:]]*gcr[^[:space:]]*|image:\ gcr.io/$PROJECT_ID/polite:$SHORT_SHA|g" k8s/staging-deployment.yaml && \
+    sed -E -i "" "s/image:[[:space:]]*gcr[^[:space:]]*/image:\ gcr.io\/$PROJECT_ID\/polite:$SHORT_SHA/g" k8s/staging-deployment.yaml && \
     cat k8s/staging-deployment.yaml
 images:
 - 'gcr.io/$PROJECT_ID/polite'
