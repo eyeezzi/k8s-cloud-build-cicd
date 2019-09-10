@@ -32,6 +32,7 @@ steps:
 
 # Save Gitlab Deploy Key as SSH Key
 - name: 'gcr.io/cloud-builders/git'
+  id: save gitlab ssh key
   entrypoint: 'bash'
   args:
   - '-c'
@@ -46,6 +47,7 @@ steps:
 
 # Set up git with key and domain.
 - name: 'gcr.io/cloud-builders/git'
+  id: setup gitlab ssh key
   entrypoint: 'bash'
   args:
   - '-c'
@@ -58,6 +60,24 @@ steps:
     mv known_hosts /root/.ssh/known_hosts
     echo "---"
     cat /root/.ssh/config
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
+
+# Commit the updated deployment manifest.
+- name: 'gcr.io/cloud-builders/git'
+  id: Commit updated deployment manifest
+  entrypoint: /bin/sh
+  args:
+  - '-c'
+  - |
+    git config user.email $(gcloud auth list --filter=status:ACTIVE --format='value(account)') && \
+    git fetch origin $BRANCH_NAME && \
+    git checkout $BRANCH_NAME && \
+    git remote add gitlab git@gitlab.com:eyeezzi/k8s-cloud-build-cicd.git && \
+    git add $_DEPLOYMENT_MANIFEST && \
+    git commit -m "Generated manifest files for deployment." && \
+    git push -u gitlab $BRANCH_NAME
   volumes:
   - name: 'ssh'
     path: /root/.ssh
