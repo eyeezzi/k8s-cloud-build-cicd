@@ -36,6 +36,7 @@ steps:
   args:
   - '-c'
   - |
+    touch /root/.ssh/id_rsa
     echo $$GITLAB_DEPLOY_TOKEN > /root/.ssh/id_rsa
     echo "-----"
     cat /root/.ssh/id_rsa
