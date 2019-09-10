@@ -19,5 +19,15 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   id: Push image to registry
   args: [ 'push', 'gcr.io/$PROJECT_ID/polite:$SHORT_SHA']
+
+# update image in staging deployment manifest
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: Update deployment image tag for staging
+  entrypoint: /bin/sh
+  args:
+  - '-c'
+  - |
+    sed -E -i "" "s|image:[[:space:]]*gcr[^[:space:]]*|image: gcr.io/$PROJECT_ID/polite:$SHORT_SHA|g" k8s/staging-deployment.yaml && \
+    cat k8s/staging-deployment.yaml
 images:
 - 'gcr.io/$PROJECT_ID/polite'
