@@ -39,12 +39,28 @@ steps:
     mkdir -p /root/.ssh
     touch /root/.ssh/id_rsa
     echo $$GITLAB_DEPLOY_TOKEN > /root/.ssh/id_rsa
-    echo "-----"
-    cat /root/.ssh/id_rsa
-  # volumes:
-  # - name: 'ssh'
-  #   path: /root/.ssh
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
   secretEnv: ['GITLAB_DEPLOY_TOKEN']
+
+# Set up git with key and domain.
+- name: 'gcr.io/cloud-builders/git'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    chmod 600 /root/.ssh/id_rsa
+    cat <<EOF >/root/.ssh/config
+    Hostname gitlab.com
+    IdentityFile /root/.ssh/id_rsa
+    EOF
+    mv known_hosts /root/.ssh/known_hosts
+    echo "---"
+    cat /root/.ssh/config
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
 images:
 - 'gcr.io/$PROJECT_ID/polite'
 secrets:
