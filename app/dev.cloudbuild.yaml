@@ -72,12 +72,14 @@ steps:
   - '-c'
   - |
     ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
-    git config user.email $(gcloud auth list --filter=status:ACTIVE --format='value(account)') && \
-    git fetch origin $BRANCH_NAME && \
-    git checkout $BRANCH_NAME && \
-    git remote add gitlab git@gitlab.com:eyeezzi/k8s-cloud-build-cicd.git && \
-    git add $_DEPLOYMENT_MANIFEST && \
-    git commit -m "Generated manifest files for deployment." && \
+    git config user.email $(gcloud auth list --filter=status:ACTIVE --format='value(account)')
+    git fetch origin $BRANCH_NAME
+    git checkout $BRANCH_NAME
+    git remote add gitlab git@gitlab.com:eyeezzi/k8s-cloud-build-cicd.git
+    echo "---"
+    git remote -v
+    git add $_DEPLOYMENT_MANIFEST
+    git commit -m "Generated manifest files for deployment."
     git push -u gitlab $BRANCH_NAME
   volumes:
   - name: 'ssh'
