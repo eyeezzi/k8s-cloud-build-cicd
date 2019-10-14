@@ -30,40 +30,6 @@ steps:
   - |
     sed -E -i "s|image:[[:space:]]*gcr[^[:space:]]*|image: gcr.io/$PROJECT_ID/polite:$SHORT_SHA|g" $_DEPLOYMENT_MANIFEST
 
-# # Save Gitlab Deploy Key as SSH Key
-# - name: 'gcr.io/cloud-builders/git'
-#   id: save gitlab ssh key
-#   entrypoint: 'bash'
-#   args:
-#   - '-c'
-#   - |
-#     mkdir -p /root/.ssh
-#     touch /root/.ssh/id_rsa
-#     echo $$GITLAB_DEPLOY_TOKEN > /root/.ssh/id_rsa
-#   volumes:
-#   - name: 'ssh'
-#     path: /root/.ssh
-#   secretEnv: ['GITLAB_DEPLOY_TOKEN']
-
-# # Set up git with key and domain.
-# - name: 'gcr.io/cloud-builders/git'
-#   id: setup gitlab ssh key
-#   entrypoint: 'bash'
-#   args:
-#   - '-c'
-#   - |
-#     chmod 600 /root/.ssh/id_rsa
-#     cat <<EOF >/root/.ssh/config
-#     Hostname gitlab.com
-#     IdentityFile /root/.ssh/id_rsa
-#     EOF
-#     mv known_hosts /root/.ssh/known_hosts
-#     echo "---"
-#     cat /root/.ssh/config
-#   volumes:
-#   - name: 'ssh'
-#     path: /root/.ssh
-
 # Commit the updated deployment manifest.
 - name: 'gcr.io/cloud-builders/git'
   id: Commit updated deployment manifest
@@ -71,15 +37,13 @@ steps:
   args:
   - '-c'
   - |
-    # ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null gitlab.com
-    # git config user.email $(gcloud auth list --filter=status:ACTIVE --format='value(account)')
     git fetch origin $BRANCH_NAME
     git checkout $BRANCH_NAME
     git remote add gitlab git@gitlab.com:eyeezzi/k8s-cloud-build-cicd.git
     echo "---"
     git remote -v
     git add $_DEPLOYMENT_MANIFEST
-    # git commit -m "Generated manifest files for deployment."
+    git commit -m "Generated manifest files for deployment."
     git config core.sshCommand "ssh -i `pwd`/../secrets/gitlab-ssh-key.enc -F /dev/null"
     git push -u gitlab $BRANCH_NAME
   # volumes:
@@ -90,8 +54,6 @@ images:
 secrets:
 # DRAWBACK: you cannot use variable substitution for project-id, kms-keyring, and kms-key
 - kmsKeyName: projects/k8s-cicd-251209/locations/global/keyRings/polite-staging/cryptoKeys/polite-staging-default
-  # secretEnv:
-  #   GITLAB_DEPLOY_TOKEN: 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
 substitutions:
     _KMS_KEYRING: polite-staging
     _KMS_KEY: polite-staging-default
