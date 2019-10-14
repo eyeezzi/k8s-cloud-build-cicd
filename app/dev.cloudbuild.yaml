@@ -51,9 +51,9 @@ steps:
   #   path: /root/.ssh
 images:
 - 'gcr.io/$PROJECT_ID/polite'
-secrets:
+# secrets:
 # DRAWBACK: you cannot use variable substitution for project-id, kms-keyring, and kms-key
-- kmsKeyName: projects/k8s-cicd-251209/locations/global/keyRings/polite-staging/cryptoKeys/polite-staging-default
+# - kmsKeyName: projects/k8s-cicd-251209/locations/global/keyRings/polite-staging/cryptoKeys/polite-staging-default
 substitutions:
     _KMS_KEYRING: polite-staging
     _KMS_KEY: polite-staging-default
