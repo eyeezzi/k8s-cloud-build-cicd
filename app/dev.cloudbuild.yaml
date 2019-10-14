@@ -37,6 +37,7 @@ steps:
   args:
   - '-c'
   - |
+    set -e
     git fetch origin $BRANCH_NAME
     git checkout $BRANCH_NAME
     git remote add gitlab git@gitlab.com:eyeezzi/k8s-cloud-build-cicd.git
