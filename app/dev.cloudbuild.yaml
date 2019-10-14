@@ -47,6 +47,7 @@ steps:
     git config --global user.name "Cloud Build"
     echo "==="
     git commit -m "Generated manifest files for deployment."
+    echo "=->hello" | bas64 | base64 --decode | xargs echo
     base64 --decode --input=`pwd`/../secrets/gitlab-ssh-key.enc | gcloud kms decrypt --project=$_KMS_PROJECT --plaintext-file=- --ciphertext-file=- --location=global --keyring=$_KMS_KEYRING --key=$_KMS_KEY > /tmp/gitlab-ssh-key.dec"
     git config core.sshCommand "ssh -i /tmp/gitlab-ssh-key.dec -F /dev/null"
     git push -u gitlab $BRANCH_NAME
