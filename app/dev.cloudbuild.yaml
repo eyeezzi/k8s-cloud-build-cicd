@@ -80,10 +80,11 @@ steps:
     git remote -v
     git add $_DEPLOYMENT_MANIFEST
     # git commit -m "Generated manifest files for deployment."
-    GIT_SSH_COMMAND='ssh -i ./secrets/gitlab-ssh-key.enc' git push -u gitlab $BRANCH_NAME
-  volumes:
-  - name: 'ssh'
-    path: /root/.ssh
+    git config core.sshCommand "ssh -i `pwd`/../secrets/gitlab-ssh-key.enc -F /dev/null"
+    git push -u gitlab $BRANCH_NAME
+  # volumes:
+  # - name: 'ssh'
+  #   path: /root/.ssh
 images:
 - 'gcr.io/$PROJECT_ID/polite'
 secrets:
