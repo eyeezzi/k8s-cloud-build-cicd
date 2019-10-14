@@ -43,7 +43,7 @@ steps:
     echo "---"
     git remote -v
     git add $_DEPLOYMENT_MANIFEST
-    git config --global user.email <>
+    git config --global user.email "ci@email.com"
     git config --global user.name "Cloud Build"
     echo "==="
     git commit -m "Generated manifest files for deployment."
