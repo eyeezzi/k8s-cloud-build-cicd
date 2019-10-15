@@ -53,7 +53,7 @@ steps:
     ls -la /tmp
     git config core.sshCommand "ssh -i /tmp/gitlab-ssh-key.dec -F /dev/null"
     ls -la /etc/ssh | grep known
-    mkdir -p ~/.ssh && ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
+    mkdir -p ~/.ssh && ssh-keyscan gitlab.com >> /etc/ssh/ssh_known_hosts
     cat ~/.ssh/known_hosts | grep gitlab.com
     echo "~~>"
     ssh git@gitlab.com -vvvv
