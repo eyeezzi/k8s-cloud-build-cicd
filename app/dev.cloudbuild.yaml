@@ -52,7 +52,7 @@ steps:
     echo "==="
     ls -la /tmp
     git config core.sshCommand "ssh -i /tmp/gitlab-ssh-key.dec -F /dev/null"
-    ls -la /etc/ | grep known
+    ls -la /etc/ssh | grep known
     mkdir -p ~/.ssh && ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
     cat ~/.ssh/known_hosts | grep gitlab.com
     echo "~~>"
