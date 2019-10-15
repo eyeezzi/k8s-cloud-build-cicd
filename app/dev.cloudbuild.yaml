@@ -55,6 +55,7 @@ steps:
     mkdir -p ~/.ssh && ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
     cat ~/.ssh/known_hosts | grep gitlab.com
     echo "~~>"
+    ssh git@gitlab.com -vvvv
     git push -u gitlab $BRANCH_NAME
   # volumes:
   # - name: 'ssh'
