@@ -13,7 +13,7 @@ steps:
   id: Push image to registry
   args: [ 'push', 'gcr.io/$PROJECT_ID/polite:$SHORT_SHA']
 
-- name: 'gcr.io/cloud-builders/kubectl'
+- name: 'golang:1.13'
   id: Tool Check
   entrypoint: sh
   args: ['which', 'bash']
