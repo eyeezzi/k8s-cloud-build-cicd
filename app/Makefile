@@ -1,12 +1,20 @@
 # The environment this Makefile runs in must have:
 # - make, bash, openssl, kubectl
-PROJECT_ID := $(shell echo $${PROJECT_ID:-TO_BE_DEFINED})
+PROJECT_ID := $(shell echo $${PROJECT_ID:-undefined})
 SERVICE_SHORT_NAME := polite
 SERVICE_LONG_NAME := ${PROJECT_ID}/${SERVICE_SHORT_NAME}
 IMAGE_URL := gcr.io/${SERVICE_LONG_NAME}
 COMMIT_SHA := $(shell echo $${SHORT_SHA:-$$(git rev-parse --short HEAD)})
 
 K8S_YAMLS_LOCATION := ./k8s
+
+.PHONY: containerize
+containerize:
+	docker build -f Dockerfile -t ${IMAGE_URL}:${COMMIT_SHA} -t ${IMAGE_URL}:latest . 1>/dev/null
+
+.PHONY: push
+push:
+	docker push ${IMAGE_URL}:${COMMIT_SHA}
 
 .PHONY: update-deployment-image
 update-deployment-image: CONTAINER=polite
