@@ -15,8 +15,14 @@ steps:
 
 - name: 'golang:1.13'
   id: Tool Check
-  entrypoint: apt-get
-  args: ['--help']
+  entrypoint: /bin/sh
+  args:
+  - '-c'
+  - |
+    which bash
+    which make
+    echo "--kubectl"
+    which kubectl
 
 images:
 - 'gcr.io/$PROJECT_ID/polite'
