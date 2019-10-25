@@ -13,5 +13,9 @@ steps:
   id: Push image to registry
   args: [ 'push', 'gcr.io/$PROJECT_ID/polite:$SHORT_SHA']
 
+- name: 'gcr.io/cloud-builders/kubectl'
+  id: Tool Check
+  args: ['config', 'view']
+
 images:
 - 'gcr.io/$PROJECT_ID/polite'
