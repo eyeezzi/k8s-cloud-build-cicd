@@ -1,73 +1,17 @@
 steps:
 
-# download dependencies
-# SKIP
-
-# run tests
 - name: 'gcr.io/cloud-builders/go:alpine'
   id: Run unit tests
   args: ['test', './src/']
   env: ['GOPATH=.']
-  # env: ['PROJECT_ROOT=polite']
 
-# bundle app into container image
 - name: 'gcr.io/cloud-builders/docker'
   id: Build application image
   args: [ 'build', '--quiet', '-t', 'gcr.io/$PROJECT_ID/polite:$SHORT_SHA', '.']
 
-# push the image to a registry
 - name: 'gcr.io/cloud-builders/docker'
   id: Push image to registry
   args: [ 'push', 'gcr.io/$PROJECT_ID/polite:$SHORT_SHA']
 
-# update the image version in the staging deployment manifest
-# NOTE: I don't like the use of regex to update image tag, but no better option yet.
-- name: 'gcr.io/cloud-builders/gcloud'
-  id: Update deployment image tag for staging
-  entrypoint: /bin/sh
-  args:
-  - '-c'
-  - |
-    sed -E -i "s|image:[[:space:]]*gcr[^[:space:]]*|image: gcr.io/$PROJECT_ID/polite:$SHORT_SHA|g" $_DEPLOYMENT_MANIFEST
-
-# Commit the updated deployment manifest.
-- name: 'gcr.io/cloud-builders/git'
-  id: Commit updated deployment manifest
-  entrypoint: /bin/sh
-  args:
-  - '-c'
-  - |
-    set -e
-    git fetch origin $BRANCH_NAME
-    git checkout $BRANCH_NAME
-    git remote set-url origin git@gitlab.com:eyeezzi/k8s-cloud-build-cicd.git
-    echo "---"
-    git remote -v
-    git add $_DEPLOYMENT_MANIFEST
-    git config --global user.email "cloudbuild@email.com"
-    git config --global user.name "Cloud Build"
-    git commit -m "Generated manifest files for deployment."
-    base64 --decode -i `pwd`/../secrets/gitlab-ssh-key.enc | gcloud kms decrypt --project=$_KMS_PROJECT --plaintext-file=- --ciphertext-file=- --location=global --keyring=$_KMS_KEYRING --key=$_KMS_KEY > /tmp/gitlab-ssh-key.dec
-    chmod 755 /tmp/gitlab-ssh-key.dec
-    echo "==="
-    ls -la /tmp
-    git config core.sshCommand "ssh -i /tmp/gitlab-ssh-key.dec -F /dev/null"
-    ls -la /etc/ssh | grep known
-    mkdir -p ~/.ssh && ssh-keyscan gitlab.com >> /etc/ssh/ssh_known_hosts
-    cat ~/.ssh/known_hosts | grep gitlab.com
-    echo "~~>"
-    ssh git@gitlab.com -vvvv
-    git push -u $BRANCH_NAME
-  # volumes:
-  # - name: 'ssh'
-  #   path: /root/.ssh
 images:
 - 'gcr.io/$PROJECT_ID/polite'
-# secrets:
-# DRAWBACK: you cannot use variable substitution for project-id, kms-keyring, and kms-key
-# - kmsKeyName: projects/k8s-cicd-251209/locations/global/keyRings/polite-staging/cryptoKeys/polite-staging-default
-substitutions:
-    _KMS_KEYRING: polite-staging
-    _KMS_KEY: polite-staging-default
-    _KMS_PROJECT: k8s-cicd-251209
-    _DEPLOYMENT_MANIFEST: k8s/staging-deployment.yaml
