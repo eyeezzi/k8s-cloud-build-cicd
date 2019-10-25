@@ -15,8 +15,8 @@ steps:
 
 - name: 'gcr.io/cloud-builders/kubectl'
   id: Tool Check
-  args: ['gcloud', 'info']
-  entrypoint: gcloud
+  entrypoint: sh
+  args: ['which', 'bash']
 
 images:
 - 'gcr.io/$PROJECT_ID/polite'
