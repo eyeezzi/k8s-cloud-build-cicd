@@ -1,6 +1,6 @@
 # The environment this Makefile runs in must have:
 # - make, bash, openssl, kubectl
-PROJECT_ID := k8s-cicd-251209
+PROJECT_ID := $(shell echo $${PROJECT_ID:-TO_BE_DEFINED})
 SERVICE_SHORT_NAME := polite
 SERVICE_LONG_NAME := ${PROJECT_ID}/${SERVICE_SHORT_NAME}
 IMAGE_URL := gcr.io/${SERVICE_LONG_NAME}
