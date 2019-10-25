@@ -20,7 +20,10 @@ steps:
   - '-c'
   - |
     make update-deployment-image
-    make cat
+
+- name: 'gcr.io/$PROJECT_ID/go-make-kubectl'
+  id: Print deployment file
+  args: [ 'cat' ]
 
 images:
 - 'gcr.io/$PROJECT_ID/polite'
