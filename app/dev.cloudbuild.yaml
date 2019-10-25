@@ -15,8 +15,8 @@ steps:
 
 - name: 'golang:1.13'
   id: Tool Check
-  entrypoint: sh
-  args: ['which', 'bash']
+  entrypoint: make
+  args: ['help']
 
 images:
 - 'gcr.io/$PROJECT_ID/polite'
