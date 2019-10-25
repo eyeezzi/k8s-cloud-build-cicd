@@ -24,6 +24,6 @@ apply-staging-files:
 	files=$$(find ${K8S_YAMLS_LOCATION} -type f \( -name "*.yml" -or -name "*.yaml" \) | grep staging); \
 	echo "$$files" | xargs -I {} kubectl --kubeconfig=${KUBECONFIG} --token=${DEPLOYER_TOKEN} apply -f {}
 
-.PHONY: help
-help:
-	echo "hello world from make"
+.PHONY: cat
+cat:
+	cat ${K8S_YAMLS_LOCATION}/staging-deployment.yaml
