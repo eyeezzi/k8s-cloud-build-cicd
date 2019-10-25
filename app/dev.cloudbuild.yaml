@@ -19,10 +19,8 @@ steps:
   args:
   - '-c'
   - |
-    which bash
-    which make
-    echo "--kubectl"
-    which kubectl
+    make update-deployment-image
+    make cat
 
 images:
 - 'gcr.io/$PROJECT_ID/polite'
