@@ -29,9 +29,5 @@ update-deployment-image:
 .PHONY: apply-staging-files
 apply-staging-files: KUBECONFIG:=${K8S_YAMLS_LOCATION}/staging.deployer.kubeconfig.yaml
 apply-staging-files:
-	files=$$(find ${K8S_YAMLS_LOCATION} -type f \( -name "*.yml" -or -name "*.yaml" \) | grep staging | grep -v kubeconfig); \
+	@files=$$(find ${K8S_YAMLS_LOCATION} -type f \( -name "*.yml" -or -name "*.yaml" \) | grep staging | grep -v kubeconfig); \
 	echo "$$files" | xargs -I {} kubectl --kubeconfig=${KUBECONFIG} --token=${DEPLOYER_TOKEN} apply -f {} --dry-run
-
-.PHONY: cat
-cat:
-	cat ${K8S_YAMLS_LOCATION}/staging-deployment.yaml
