@@ -2,7 +2,7 @@ steps:
 
 - name: 'gcr.io/cloud-builders/go:alpine'
   id: Run unit tests
-  args: ['test', './src/']
+  args: ['test', 'src/']
   env: ['GOPATH=.']
 
 - name: gcr.io/cloud-builders/docker
