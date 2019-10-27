@@ -5,17 +5,21 @@ steps:
   args: ['test', './src/']
   env: ['GOPATH=.']
 
-- name: 'gcr.io/$PROJECT_ID/go-make-kubectl'
+# - name: 'gcr.io/$PROJECT_ID/go-make-kubectl'
+#   id: Build application image
+#   env:
+#   - 'PROJECT_ID=$PROJECT_ID'
+#   args: [ 'containerize' ]
+
+- name: gcr.io/cloud-builders/docker
   id: Build application image
-  env:
-  - 'PROJECT_ID=$PROJECT_ID'
-  args: [ 'containerize' ]
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/myimage:$SHORT_SHA', '.']
 
-- name: 'gcr.io/$PROJECT_ID/go-make-kubectl'
-  id: Push image to registry
-  env:
-  - 'PROJECT_ID=$PROJECT_ID'
-  args: [ 'push' ]
+# - name: 'gcr.io/$PROJECT_ID/go-make-kubectl'
+#   id: Push image to registry
+#   env:
+#   - 'PROJECT_ID=$PROJECT_ID'
+#   args: [ 'push' ]
 
-# images:
-# - 'gcr.io/$PROJECT_ID/polite'
+images:
+- 'gcr.io/$PROJECT_ID/polite'
