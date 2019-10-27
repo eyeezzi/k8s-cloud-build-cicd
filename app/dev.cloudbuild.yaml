@@ -4,7 +4,7 @@ steps:
   id: Run unit tests
   args: ['test']
   dir: 'app/src'
-  # env: ['GOPATH=.']
+  env: ['GOPATH=.']
 
 - name: gcr.io/cloud-builders/docker
   id: Build application image
