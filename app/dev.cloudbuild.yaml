@@ -15,11 +15,5 @@ steps:
   id: Build application image
   args: ['build', '-t', 'gcr.io/$PROJECT_ID/polite:$SHORT_SHA', '.']
 
-# - name: 'gcr.io/$PROJECT_ID/go-make-kubectl'
-#   id: Push image to registry
-#   env:
-#   - 'PROJECT_ID=$PROJECT_ID'
-#   args: [ 'push' ]
-
 images:
 - 'gcr.io/$PROJECT_ID/polite:$SHORT_SHA'
