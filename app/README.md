@@ -49,3 +49,11 @@ docker push gcr.io/${PROJECT_ID}/${IMAGE}:${TAG}
 # List images in GCR
 gcloud container images list
 ```
+
+## Other commands
+
+```bash
+# Test a service without exposing it to the internet yet.
+# link a local port to a service port
+kubectl -n $NAMESPACE port-forward services/$NAME $LOCAL:$REMOTE
+```
