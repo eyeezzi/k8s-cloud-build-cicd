@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: polite
-  namespace: staging # TODO: template
+  namespace: staging
 spec:
   replicas: 2
   selector:
@@ -13,24 +13,23 @@ spec:
       labels:
         app: polite
     spec:
-      imagePullSecrets:
-      - name: gcr-json-key # TODO: template this.
       containers:
-      - name: polite
-        image: gcr.io/k8s-cicd-251209/polite:v2 # TODO: template part of this.
-        imagePullPolicy: IfNotPresent
+      - args:
+        - --greeting=howdy
         env:
         - name: PORT
           value: "8080"
-        args:
-          - --greeting=howdy
+        image: gcr.io/TO_BE_DEFINED/polite:fb170a4
+        imagePullPolicy: IfNotPresent
+        name: polite
         ports:
         - containerPort: 8080
         resources:
-          requests:
-            cpu: "20m"
-            memory: "55M"
           limits:
-            cpu: "50m"
-            memory: "250M"
-
+            cpu: 50m
+            memory: 250M
+          requests:
+            cpu: 20m
+            memory: 55M
+      imagePullSecrets:
+      - name: gcr-json-key

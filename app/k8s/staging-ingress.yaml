@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: polite
+  namespace: staging
+  annotations:
+    kubernetes.io/ingress.class: traefik # needed so traefik handles the routing
+spec:
+  rules:
+  - host: staging.polite.opsolute.com # FQDN should point to cluster LB
+    http:
+      paths:
+      - backend:
+          serviceName: polite
+          servicePort: http

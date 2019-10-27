@@ -4,8 +4,14 @@ steps:
   id: Update deployment image
   args: [ 'update-deployment-image' ]
   dir: 'app'
+  env:
+  - 'PROJECT_ID=$PROJECT_ID'
+  - 'SHORT_SHA=$SHORT_SHA'
 
 - name: 'gcr.io/$PROJECT_ID/go-make-kubectl'
   id: Apply staging files
   args: [ 'apply-staging-files' ]
   dir: 'app'
+  env:
+  - 'PROJECT_ID=$PROJECT_ID'
+  - 'SHORT_SHA=$SHORT_SHA'
