@@ -57,3 +57,23 @@ gcloud container images list
 # link a local port to a service port
 kubectl -n $NAMESPACE port-forward services/$NAME $LOCAL:$REMOTE
 ```
+
+## Change Management
+
+### To test your changes
+
+Open a PR for your feature branch.
+
+### To deploy a feature to Staging
+
+Merge the feature PR to `master`.
+
+### To promote the feature from Staging to Production
+
+Tag the merge commit on `master` with `vMAJOR.MINOR.PATCH`.
+
+```
+git tag --list
+git tag [-f] v0.0.1 <branch|commit|object>
+git push [-f] --tags
+```
