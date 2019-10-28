@@ -17,7 +17,7 @@ push:
 	docker push ${IMAGE_URL}:${COMMIT_SHA}
 
 .PHONY: update-deployment-image
-update-deployment-image: CONTAINER=polite
+update-deployment-image: CONTAINER=polite-api
 update-deployment-image:
 	@files=$$(find ${K8S_YAMLS_LOCATION} -type f \( -name "*.yml" -or -name "*.yaml" \) | grep deployment); \
 	for i in $$files; do \

@@ -1,13 +1,13 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: polite
-  namespace: staging # TODO: template
+  name: polite-api
+  namespace: polite # TODO: template
 spec:
   selector:
-    app: polite
+    app: polite-api
   type: ClusterIP
   ports:
-  - name: http
+  - name: web
     port: 80
     targetPort: 8080
