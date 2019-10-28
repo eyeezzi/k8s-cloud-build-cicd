@@ -1,0 +1,18 @@
+steps:
+
+- name: 'gcr.io/$PROJECT_ID/go-make-kubectl'
+  id: Update deployment image
+  args: [ 'update-deployment-image' ]
+  dir: 'app'
+  env:
+  - 'PROJECT_ID=$PROJECT_ID'
+  - 'SHORT_SHA=$SHORT_SHA'
+
+- name: 'gcr.io/$PROJECT_ID/go-make-kubectl'
+  id: Apply prod files
+  args: [ 'apply-prod-files' ]
+  dir: 'app'
+  env:
+  - 'PROJECT_ID=$PROJECT_ID'
+  - 'SHORT_SHA=$SHORT_SHA'
+  - 'DEPLOYER_TOKEN=$_DEPLOYER_TOKEN'
