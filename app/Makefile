@@ -30,10 +30,10 @@ update-deployment-image:
 apply-staging-files: KUBECONFIG:=${K8S_YAMLS_LOCATION}/hive-staging.polite.deployer.kubeconfig.yaml
 apply-staging-files:
 	@files=$$(find ${K8S_YAMLS_LOCATION} -type f \( -name "*.yml" -or -name "*.yaml" \) | grep staging | grep -v kubeconfig); \
-	echo "$$files" | xargs -I {} kubectl --kubeconfig=${KUBECONFIG} --token=${DEPLOYER_TOKEN} apply -f {} --dry-run
+	echo "$$files" | xargs -I {} kubectl --kubeconfig=${KUBECONFIG} --token=${DEPLOYER_TOKEN} apply -f {}
 
 .PHONY: apply-prod-files
 apply-prod-files: KUBECONFIG:=${K8S_YAMLS_LOCATION}/hive-prod.polite.deployer.kubeconfig.yaml
 apply-prod-files:
-	files=$$(find ${K8S_YAMLS_LOCATION} -type f \( -name "*.yml" -or -name "*.yaml" \) | grep production); \
-	echo "$$files" | xargs -I {} kubectl --kubeconfig=${KUBECONFIG} --token=${DEPLOYER_TOKEN} apply -f {} --dry-run
+	files=$$(find ${K8S_YAMLS_LOCATION} -type f \( -name "*.yml" -or -name "*.yaml" \) | grep prod); \
+	echo "$$files" | xargs -I {} kubectl --kubeconfig=${KUBECONFIG} --token=${DEPLOYER_TOKEN} apply -f {}
