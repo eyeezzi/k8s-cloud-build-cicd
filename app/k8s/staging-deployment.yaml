@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: polite
-  namespace: staging
+  name: polite-api
+  namespace: polite
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: polite
+      app: polite-api
   template:
     metadata:
       labels:
-        app: polite
+        app: polite-api
     spec:
       containers:
       - args:
@@ -19,9 +19,9 @@ spec:
         env:
         - name: PORT
           value: "8080"
-        image: gcr.io/TO_BE_DEFINED/polite:fb170a4
+        image: gcr.io/PROJECT/polite-api
         imagePullPolicy: IfNotPresent
-        name: polite
+        name: polite-api
         ports:
         - containerPort: 8080
         resources:
