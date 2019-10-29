@@ -11,5 +11,5 @@ steps:
 #   args: ['build', '-t', 'gcr.io/$PROJECT_ID/polite:$SHORT_SHA', '.']
 #   dir: 'app'
 
-images:
-- 'gcr.io/$PROJECT_ID/polite:$SHORT_SHA'
+# images:
+# - 'gcr.io/$PROJECT_ID/polite:$SHORT_SHA'
