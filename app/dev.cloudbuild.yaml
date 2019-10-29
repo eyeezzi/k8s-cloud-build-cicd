@@ -6,10 +6,10 @@ steps:
   dir: 'app/src'
   env: ['GOPATH=.']
 
-- name: gcr.io/cloud-builders/docker
-  id: Build application image
-  args: ['build', '-t', 'gcr.io/$PROJECT_ID/polite:$SHORT_SHA', '.']
-  dir: 'app'
+# - name: gcr.io/cloud-builders/docker
+#   id: Build application image
+#   args: ['build', '-t', 'gcr.io/$PROJECT_ID/polite:$SHORT_SHA', '.']
+#   dir: 'app'
 
-images:
-- 'gcr.io/$PROJECT_ID/polite:$SHORT_SHA'
+# images:
+# - 'gcr.io/$PROJECT_ID/polite:$SHORT_SHA'

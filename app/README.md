@@ -77,3 +77,14 @@ git tag --list
 git tag [-f] v0.0.1 <branch|commit|object>
 git push [-f] --tags
 ```
+
+### ISSUE: Cloud Build does not trigger on refs/pull/ID/merge
+
+When a PR is created, Github creates 2 branches: `refs/pull/ID/head` and `refs/pull/ID/merge`. The former contains only your changes, while the latter simulates merging your changes with the destination branch (eg `master`). Testing against the latter branch verifies that your changes won't break the mainline when merged.
+
+However, Cloud Build does not support triggering on changes to `refs/pull/ID/merge`. [See this issue](https://issuetracker.google.com/issues/119662038). Resulting in the following undesirable consequences.
+
+1. You can merge code that breaks the mainline.
+2. Since we tag images with the commit SHA, you'd have to build the image in the staging pipeline, i.e after the PR has being merged into master.
+
+# Test 4
