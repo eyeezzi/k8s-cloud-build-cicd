@@ -1,0 +1,16 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroutetls
+  namespace: polite
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - match: Host(`staging.polite.opsolute.com`)
+    kind: Rule
+    services:
+    - name: polite-api
+      port: 80
+  tls:
+    certResolver: default
