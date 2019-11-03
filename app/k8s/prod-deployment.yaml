@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - args:
-        - --greeting=howdy
+        - --greeting=Hola!
         env:
         - name: PORT
           value: "8080"
