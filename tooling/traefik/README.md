@@ -5,7 +5,7 @@ Kubernetes Ingress Controller
 ## Installation
 
 ```bash
-kubectl apply -f tfk-crds.yaml tfk-rbac.yaml tfk-deployment.yaml
+kubectl apply -f tfk-crds.yaml -f tfk-rbac.yaml -f tfk-deployment.yaml
 
 # Optionally, deploy a test app
 kubectl apply -f whoami.yaml
