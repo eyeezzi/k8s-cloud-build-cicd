@@ -35,5 +35,5 @@ apply-staging-files:
 .PHONY: apply-prod-files
 apply-prod-files: KUBECONFIG:=${K8S_YAMLS_LOCATION}/hive-prod.polite.deployer.kubeconfig.yaml
 apply-prod-files:
-	files=$$(find ${K8S_YAMLS_LOCATION} -type f \( -name "*.yml" -or -name "*.yaml" \) | grep prod); \
+	files=$$(find ${K8S_YAMLS_LOCATION} -type f \( -name "*.yml" -or -name "*.yaml" \) | grep prod | grep -v kubeconfig); \
 	echo "$$files" | xargs -I {} kubectl --kubeconfig=${KUBECONFIG} --token=${DEPLOYER_TOKEN} apply -f {}
