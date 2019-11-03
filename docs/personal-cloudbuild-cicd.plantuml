@@ -4,13 +4,11 @@ title K8s Application CI/CD Pipelines using Google Cloud Build
 
 actor "Eng" as eng
 participant "PR Branch" as pr
-' participant "Dev Branch" as dev
 participant "Master Branch" as master
 participant "Cloud Build" as gcb
 participant "GCR" as gcr
 participant "K8s Staging" as staging
 participant "K8s Prod" as prod
-' participant "Spinnaker" as spinnaker
 
 == Initial Setup ==
 
