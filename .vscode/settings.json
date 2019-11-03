@@ -1,0 +1,21 @@
+{
+    "go.useLanguageServer": true,
+    "go.lintOnSave": "file",
+    "[go]": {
+        "editor.snippetSuggestions": "none",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        },
+        "editor.codeActionsOnSaveTimeout": 1000
+    },
+    "gopls": {
+        "usePlaceholders": true, // add parameter placeholders when completing a function
+        "wantCompletionDocumentation": true // for documentation in completion items
+    },
+    "go.languageServerFlags": [
+        "-rpc.trace", // for more detailed debug logging
+        "serve",
+        "--debug=localhost:6060", // to investigate memory usage, see profiles 
+    ],
+}

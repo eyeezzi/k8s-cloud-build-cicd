@@ -1,0 +1,46 @@
+@startuml
+
+title K8s Application CI/CD Pipelines using Google Cloud Build
+
+actor "Eng" as eng
+participant "PR Branch" as pr
+participant "Master Branch" as master
+participant "Cloud Build" as gcb
+participant "GCR" as gcr
+participant "K8s Staging" as staging
+participant "K8s Prod" as prod
+
+== Initial Setup ==
+
+eng -> gcb: Setup triggers
+
+== Development Pipeline ==
+
+eng -> pr: Feature Branch
+pr -> gcb: Trigger Dev Pipeline
+gcb -> gcb: Unit Test
+gcb -> gcb: Integration Test
+gcb --> pr: Status
+
+eng -> pr: Approve
+eng -> pr: Merge
+pr -> master: Changes
+
+== Staging Pipeline ==
+
+master -> gcb: Trigger Staging Pipeline
+gcb -> gcb: Build Image
+gcb -> gcr: push Image
+gcb -> staging: Apply K8s files
+
+eng -> staging: Sanity Check
+
+== Production Pipeline ==
+
+eng -> master: Tag vK.K.K
+master -> gcb: Trigger Production Pipeline
+gcb -> gcb: Update Deployment Image
+gcb -> prod: Apply K8s files
+prod -> gcr: Pull Image
+
+@enduml

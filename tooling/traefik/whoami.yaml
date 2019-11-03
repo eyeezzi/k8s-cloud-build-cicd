@@ -1,0 +1,71 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: simpleingressroute
+  namespace: infra
+spec:
+  entryPoints:
+    - web
+  routes:
+  - match: Host(`polite.opsolute.com`) && PathPrefix(`/notls`)
+    kind: Rule
+    services:
+    - name: whoami
+      port: 80
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroutetls
+  namespace: infra
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - match: Host(`polite.opsolute.com`) && PathPrefix(`/tls`)
+    kind: Rule
+    services:
+    - name: whoami
+      port: 80
+  tls:
+    certResolver: default
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: whoami
+  namespace: infra
+spec:
+  ports:
+    - protocol: TCP
+      name: web
+      port: 80
+  selector:
+    app: whoami
+  type: ClusterIP
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  namespace: infra
+  name: whoami
+  labels:
+    app: whoami
+
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: whoami
+  template:
+    metadata:
+      labels:
+        app: whoami
+    spec:
+      containers:
+        - name: whoami
+          image: containous/whoami
+          ports:
+            - name: web
+              containerPort: 80
