@@ -1,6 +1,5 @@
 # Configure the DigitalOcean Provider
 variable "do_token" {}
-// variable "gitlab_token" {}
 
 provider "digitalocean" {
   # token will be obtained from environment variable
